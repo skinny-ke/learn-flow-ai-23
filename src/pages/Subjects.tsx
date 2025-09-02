@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Brain, Calculator as CalcIcon, Flask, Globe, Palette } from "lucide-react";
+import { BookOpen, Brain, Calculator as CalcIcon, Beaker, Globe, Palette } from "lucide-react";
 
 export default function Subjects() {
   const subjects = [
     { id: 1, name: "Mathematics", icon: CalcIcon, progress: 85, lessons: 24, color: "bg-blue-500" },
-    { id: 2, name: "Science", icon: Flask, progress: 72, lessons: 18, color: "bg-green-500" },
+    { id: 2, name: "Science", icon: Beaker, progress: 72, lessons: 18, color: "bg-green-500" },
     { id: 3, name: "English", icon: BookOpen, progress: 91, lessons: 32, color: "bg-purple-500" },
     { id: 4, name: "History", icon: Globe, progress: 68, lessons: 16, color: "bg-orange-500" },
     { id: 5, name: "Art", icon: Palette, progress: 55, lessons: 12, color: "bg-pink-500" },
