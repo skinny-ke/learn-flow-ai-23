@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -38,7 +39,12 @@ interface NavigationProps {
 
 export const Navigation = ({ user }: NavigationProps) => {
   const location = useLocation();
+  const { logout } = useAuth();
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
@@ -148,7 +154,7 @@ export const Navigation = ({ user }: NavigationProps) => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-danger">
+                  <DropdownMenuItem className="text-danger" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>

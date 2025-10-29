@@ -14,16 +14,192 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      calendar_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          event_date: string
+          event_time: string | null
+          id: string
+          subject: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          event_date: string
+          event_time?: string | null
+          id?: string
+          subject?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          event_date?: string
+          event_time?: string | null
+          id?: string
+          subject?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quiz_results: {
+        Row: {
+          completed_at: string
+          id: string
+          score: number
+          subject: string
+          time_taken_seconds: number
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          score: number
+          subject: string
+          time_taken_seconds: number
+          total_questions: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          score?: number
+          subject?: string
+          time_taken_seconds?: number
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subject_progress: {
+        Row: {
+          created_at: string
+          id: string
+          progress: number
+          subject_name: string
+          total_time_minutes: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          progress?: number
+          subject_name: string
+          total_time_minutes?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          progress?: number
+          subject_name?: string
+          total_time_minutes?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          created_at: string
+          last_activity_date: string | null
+          level: number
+          streak: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          created_at?: string
+          last_activity_date?: string | null
+          level?: number
+          streak?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          created_at?: string
+          last_activity_date?: string | null
+          level?: number
+          streak?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +326,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

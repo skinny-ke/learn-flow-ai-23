@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Subjects from "./pages/Subjects";
@@ -29,15 +30,15 @@ const App = () => (
           <Layout>
             <Routes>
               <Route path="/" element={<Landing />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/subjects" element={<Subjects />} />
-              <Route path="/quiz" element={<Quiz />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/calculator" element={<Calculator />} />
               <Route path="/auth/login" element={<AuthLogin />} />
               <Route path="/auth/register" element={<AuthRegister />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/subjects" element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
+              <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+              <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+              <Route path="/calculator" element={<ProtectedRoute><Calculator /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
