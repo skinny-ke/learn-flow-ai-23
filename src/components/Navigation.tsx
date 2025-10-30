@@ -31,7 +31,7 @@ interface NavigationProps {
   user?: {
     name: string;
     email: string;
-    role: 'STUDENT' | 'PARENT' | 'TEACHER' | 'ADMIN';
+    role: 'student' | 'parent' | 'teacher' | 'admin' | 'user';
     xp: number;
     level: number;
   } | null;

@@ -23,7 +23,7 @@ interface AuthUser extends Profile {
   level: number;
   streak: number;
   badges: string[];
-  role: 'STUDENT' | 'PARENT' | 'TEACHER' | 'ADMIN';
+  role: 'student' | 'parent' | 'teacher' | 'admin' | 'user';
 }
 
 interface AuthContextType {
@@ -75,9 +75,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUserData = async (userId: string) => {
     try {
-      const [profileResult, statsResult] = await Promise.all([
+      const [profileResult, statsResult, roleResult] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", userId).single(),
-        supabase.from("user_stats").select("*").eq("user_id", userId).single()
+        supabase.from("user_stats").select("*").eq("user_id", userId).single(),
+        supabase.from("user_roles").select("role").eq("user_id", userId).single()
       ]);
 
       if (profileResult.data && statsResult.data) {
@@ -90,8 +91,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           xp: statsResult.data.xp,
           level: statsResult.data.level,
           streak: statsResult.data.streak,
-          badges: [], // Could be added to DB later
-          role: 'STUDENT', // Default role
+          badges: [],
+          role: roleResult.data?.role || 'student',
         });
       }
     } catch (error) {
@@ -101,7 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (name: string, email: string, password: string, _role: string) => {
+  const register = async (name: string, email: string, password: string, role: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       const { error } = await supabase.auth.signUp({
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password,
         options: {
           emailRedirectTo: redirectUrl,
-          data: { name }
+          data: { name, role }
         }
       });
 

@@ -27,7 +27,7 @@ export default function AuthRegister() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "STUDENT"
+    role: "student"
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -74,19 +74,19 @@ export default function AuthRegister() {
 
   const roles = [
     { 
-      value: "STUDENT", 
+      value: "student", 
       label: "Student", 
       description: "I want to learn and take quizzes",
       icon: GraduationCap 
     },
     { 
-      value: "PARENT", 
+      value: "parent", 
       label: "Parent", 
       description: "I want to monitor my child's progress",
       icon: Users 
     },
     { 
-      value: "TEACHER", 
+      value: "teacher", 
       label: "Teacher", 
       description: "I want to create content and track students",
       icon: BookOpen 
