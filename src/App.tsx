@@ -10,6 +10,8 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Subjects from "./pages/Subjects";
 import Quiz from "./pages/Quiz";
+import QuizCreate from "./pages/QuizCreate";
+import QuizTake from "./pages/QuizTake";
 import Calendar from "./pages/Calendar";
 import Calculator from "./pages/Calculator";
 import AuthLogin from "./pages/auth/Login";
@@ -35,6 +37,8 @@ const App = () => (
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/subjects" element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
               <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+              <Route path="/quiz/create" element={<ProtectedRoute><QuizCreate /></ProtectedRoute>} />
+              <Route path="/quiz/:id" element={<ProtectedRoute><QuizTake /></ProtectedRoute>} />
               <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
               <Route path="/calculator" element={<ProtectedRoute><Calculator /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
