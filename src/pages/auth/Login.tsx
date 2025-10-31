@@ -190,13 +190,19 @@ export default function AuthLogin() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
-                  <Link 
-                    to="/auth/forgot-password" 
+                <div className="flex items-center justify-end text-sm">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toast({
+                        title: "Password Reset",
+                        description: "Password reset feature coming soon. Please contact support for assistance.",
+                      });
+                    }}
                     className="text-primary hover:underline"
                   >
                     Forgot password?
-                  </Link>
+                  </button>
                 </div>
 
                 <Button 

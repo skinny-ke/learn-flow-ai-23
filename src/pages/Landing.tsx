@@ -157,13 +157,13 @@ export default function Landing() {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  asChild
+                  onClick={() => {
+                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="text-lg px-8 py-6 border-primary/20 hover:bg-primary/10"
                 >
-                  <Link to="#demo">
-                    <Smartphone className="mr-2 h-5 w-5" />
-                    Watch Demo
-                  </Link>
+                  <Smartphone className="mr-2 h-5 w-5" />
+                  Explore Features
                 </Button>
               </div>
               
@@ -290,7 +290,7 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-background">
+      <section id="features" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
