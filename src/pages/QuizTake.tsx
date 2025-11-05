@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Clock, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import QuizAssistant from "@/components/QuizAssistant";
 
 interface Question {
   id: string;
@@ -164,95 +165,105 @@ export default function QuizTake() {
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <Card className="mb-6">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>{quiz.title}</CardTitle>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              <span>{Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
-            </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="mb-6">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>{quiz.title}</CardTitle>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span>{Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
+                </div>
+              </div>
+              <Progress value={progress} className="mt-4" />
+              <p className="text-sm text-muted-foreground mt-2">
+                Question {currentQuestion + 1} of {questions.length}
+              </p>
+            </CardHeader>
+          </Card>
+
+          <motion.div
+            key={currentQuestion}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">{currentQ.question_text}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {currentQ.question_type === 'multiple_choice' && currentQ.options && (
+                  <RadioGroup
+                    value={answers[currentQ.id] || ""}
+                    onValueChange={(value) => setAnswers({ ...answers, [currentQ.id]: value })}
+                  >
+                    {currentQ.options.map((option, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <RadioGroupItem value={option} id={`option-${index}`} />
+                        <Label htmlFor={`option-${index}`} className="cursor-pointer">
+                          {option}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                )}
+
+                {currentQ.question_type === 'true_false' && (
+                  <RadioGroup
+                    value={answers[currentQ.id] || ""}
+                    onValueChange={(value) => setAnswers({ ...answers, [currentQ.id]: value })}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="True" id="true" />
+                      <Label htmlFor="true" className="cursor-pointer">True</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="False" id="false" />
+                      <Label htmlFor="false" className="cursor-pointer">False</Label>
+                    </div>
+                  </RadioGroup>
+                )}
+
+                {currentQ.question_type === 'short_answer' && (
+                  <Input
+                    value={answers[currentQ.id] || ""}
+                    onChange={(e) => setAnswers({ ...answers, [currentQ.id]: e.target.value })}
+                    placeholder="Type your answer"
+                  />
+                )}
+
+                <div className="flex justify-between pt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                    disabled={currentQuestion === 0}
+                  >
+                    Previous
+                  </Button>
+
+                  {currentQuestion === questions.length - 1 ? (
+                    <Button onClick={handleSubmit}>
+                      Submit Quiz
+                    </Button>
+                  ) : (
+                    <Button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
+        <div className="lg:col-span-1">
+          <div className="lg:sticky lg:top-6">
+            <QuizAssistant quizTitle={quiz.title} quizSubject={quiz.subject} />
           </div>
-          <Progress value={progress} className="mt-4" />
-          <p className="text-sm text-muted-foreground mt-2">
-            Question {currentQuestion + 1} of {questions.length}
-          </p>
-        </CardHeader>
-      </Card>
-
-      <motion.div
-        key={currentQuestion}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">{currentQ.question_text}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {currentQ.question_type === 'multiple_choice' && currentQ.options && (
-              <RadioGroup
-                value={answers[currentQ.id] || ""}
-                onValueChange={(value) => setAnswers({ ...answers, [currentQ.id]: value })}
-              >
-                {currentQ.options.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option} id={`option-${index}`} />
-                    <Label htmlFor={`option-${index}`} className="cursor-pointer">
-                      {option}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            )}
-
-            {currentQ.question_type === 'true_false' && (
-              <RadioGroup
-                value={answers[currentQ.id] || ""}
-                onValueChange={(value) => setAnswers({ ...answers, [currentQ.id]: value })}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="True" id="true" />
-                  <Label htmlFor="true" className="cursor-pointer">True</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="False" id="false" />
-                  <Label htmlFor="false" className="cursor-pointer">False</Label>
-                </div>
-              </RadioGroup>
-            )}
-
-            {currentQ.question_type === 'short_answer' && (
-              <Input
-                value={answers[currentQ.id] || ""}
-                onChange={(e) => setAnswers({ ...answers, [currentQ.id]: e.target.value })}
-                placeholder="Type your answer"
-              />
-            )}
-
-            <div className="flex justify-between pt-4">
-              <Button
-                variant="outline"
-                onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
-                disabled={currentQuestion === 0}
-              >
-                Previous
-              </Button>
-
-              {currentQuestion === questions.length - 1 ? (
-                <Button onClick={handleSubmit}>
-                  Submit Quiz
-                </Button>
-              ) : (
-                <Button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
-                  Next
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
