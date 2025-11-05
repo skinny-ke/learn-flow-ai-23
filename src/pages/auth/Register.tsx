@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -32,9 +32,16 @@ export default function AuthRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { register } = useAuth();
+  const { register, isAuthenticated, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,12 +58,15 @@ export default function AuthRegister() {
     setIsLoading(true);
 
     try {
-      await register(formData.name, formData.email, formData.password, formData.role);
-      toast({
-        title: "Account created successfully!",
-        description: "Welcome to EduBoost. Let's start your learning journey!",
-      });
-      navigate("/dashboard");
+      const { error } = await register(formData.name, formData.email, formData.password, formData.role);
+      
+      if (!error) {
+        // Don't navigate yet - user needs to confirm email first
+        toast({
+          title: "Check your email!",
+          description: "We've sent you a confirmation link. Please check your email to complete registration.",
+        });
+      }
     } catch (error) {
       toast({
         title: "Registration failed",
