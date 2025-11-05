@@ -24,7 +24,8 @@ import {
   Settings,
   Trophy,
   User,
-  Zap
+  Zap,
+  FileText
 } from "lucide-react";
 
 interface NavigationProps {
@@ -47,9 +48,9 @@ export const Navigation = ({ user }: NavigationProps) => {
   };
 
   const navItems = [
-    { href: "/", label: "Home", icon: Home },
+    { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/subjects", label: "Subjects", icon: BookOpen },
-    { href: "/dashboard", label: "Dashboard", icon: GraduationCap },
+    { href: "/notes", label: "Notes", icon: FileText },
     { href: "/quiz", label: "Quizzes", icon: Brain },
     { href: "/calendar", label: "Calendar", icon: Calendar },
     { href: "/calculator", label: "Calculator", icon: Calculator },

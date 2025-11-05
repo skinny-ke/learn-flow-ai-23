@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Index from "./pages/Index";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Subjects from "./pages/Subjects";
+import Notes from "./pages/Notes";
 import Quiz from "./pages/Quiz";
 import QuizCreate from "./pages/QuizCreate";
 import QuizTake from "./pages/QuizTake";
@@ -31,11 +33,13 @@ const App = () => (
         <BrowserRouter>
           <Layout>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={<Index />} />
+              <Route path="/landing" element={<Landing />} />
               <Route path="/auth/login" element={<AuthLogin />} />
               <Route path="/auth/register" element={<AuthRegister />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/subjects" element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
+              <Route path="/notes" element={<ProtectedRoute><Notes /></ProtectedRoute>} />
               <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
               <Route path="/quiz/create" element={<ProtectedRoute><QuizCreate /></ProtectedRoute>} />
               <Route path="/quiz/:id" element={<ProtectedRoute><QuizTake /></ProtectedRoute>} />

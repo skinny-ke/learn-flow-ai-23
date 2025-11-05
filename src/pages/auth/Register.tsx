@@ -46,6 +46,27 @@ export default function AuthRegister() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate password strength
+    if (formData.password.length < 6) {
+      toast({
+        title: "Weak password",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Password mismatch",
@@ -61,10 +82,17 @@ export default function AuthRegister() {
       const { error } = await register(formData.name, formData.email, formData.password, formData.role);
       
       if (!error) {
-        // Don't navigate yet - user needs to confirm email first
         toast({
           title: "Check your email!",
-          description: "We've sent you a confirmation link. Please check your email to complete registration.",
+          description: "We've sent you a confirmation link. Please verify your email to complete registration.",
+        });
+        // Clear form
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          role: "student"
         });
       }
     } catch (error) {
